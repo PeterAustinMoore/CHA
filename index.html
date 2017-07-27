@@ -61,48 +61,53 @@
   <link href="assets/css/themify-icons.css" rel="stylesheet">
 
 	<script>
+	$(document).ready(function(){
+		var base = "https://performance.fultoncountyga.gov";
 
-    $(document).ready(function(){
-			var base = "https://performance.chattanooga.gov/";
-			var curr_page = window.location.pathname;
-			//FOR DEVELOPMENT
-			var url = window.location.hostname;
-			if(cacheJS.get(curr_page+"data") === null) {
-				var goalArray = [];
-				var values = data.initData(base);
-				var goalArray = values[0];
-				var chartData = "";
-				ontarget = values[1];
-        cacheJS.set(curr_page+"data",goalArray);
-			} else {
-        var goalArray = cacheJS.get(curr_page+"newData");
-        ontarget = data.newOnTarget(goalArray);
-			}
-			data.computeCount(goalArray);
-			data.computeOnTarget(ontarget);
-			data.computeContent(goalArray);
-			visuals.initChartist(goalArray[0]["data"], goalArray[0]["target_data"], goalArray[0]['id']);
 
-      //$(".header").fittext();
+		//FOR DEVELOPMENT
+		var url = window.location.hostname;
 
-			var i = 1;
-      $('.carousel').slick({
-        pauseOnHover: false,
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        autoplay: true,
-        autoplaySpeed: 7000,
-        prevArrow:'',
-        nextArrow:'',
-      });
-      $('.carousel').on('afterChange', function (event, slick, current) {
-        visuals.newChart(goalArray[i]["data"], goalArray[0]["target_data"], goalArray[i]['id']);
-        i++;
-        if(i == goalArray.length) {
-          i = 0;
-        }
-      });
+		if(cacheJS.get(id+"data") === null && cacheJS.get("page") === null) {
+			var id = Date.now().toString();
+			cacheJS.set("page",id)
+			var goalArray = [];
+			var values = data.initData(base);
+			var goalArray = values[0];
+			var chartData = "";
+			ontarget = values[1];
+
+			cacheJS.set(id+"data",goalArray);
+		} else {
+			var id = cacheJS.get("page")
+			var goalArray = cacheJS.get(id+"newData");
+			ontarget = data.newOnTarget(goalArray);
+		}
+		data.computeCount(goalArray);
+		data.computeOnTarget(ontarget);
+		data.computeContent(goalArray);
+		visuals.initChartist(goalArray[0]["data"], goalArray[0]["target_data"], goalArray[0]['id']);
+
+		//$(".header").fittext();
+
+		var i = 1;
+		$('.carousel').slick({
+			pauseOnHover: false,
+			slidesToShow: 1,
+			slidesToScroll: 1,
+			autoplay: true,
+			autoplaySpeed: 7000,
+			prevArrow:'',
+			nextArrow:'',
 		});
+		$('.carousel').on('afterChange', function (event, slick, current) {
+			visuals.newChart(goalArray[i]["data"], goalArray[0]["target_data"], goalArray[i]['id']);
+			i++;
+			if(i == goalArray.length) {
+				i = 0;
+			}
+		});
+	});
 	</script>
 </head>
 <body>
