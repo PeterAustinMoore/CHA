@@ -63,12 +63,13 @@
 	<script>
 
     $(document).ready(function(){
+			var base = "https://performance.chattanooga.gov/";
 			var curr_page = window.location.pathname;
 			//FOR DEVELOPMENT
 			var url = window.location.hostname;
-			if(cacheJS.get("data") === null || curr_page != "/CHA/") {
+			if(cacheJS.get("data") === null) {
 				var goalArray = [];
-				var values = data.initData();
+				var values = data.initData(base);
 				var goalArray = values[0];
 				var chartData = "";
 				ontarget = values[1];
