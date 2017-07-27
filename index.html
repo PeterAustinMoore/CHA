@@ -62,25 +62,25 @@
 
 	<script>
 	$(document).ready(function(){
-		var base = "https://performance.fultoncountyga.gov";
+		var base = "https://performance.chattanooga.gov";
 
 
 		//FOR DEVELOPMENT
 		var url = window.location.hostname;
+		var constant = "Z";
+		if(cacheJS.get(url+constant+"data") === null && cacheJS.get("page") === null) {
 
-		if(cacheJS.get(id+"data") === null && cacheJS.get("page") === null) {
-			var id = Date.now().toString();
-			cacheJS.set("page",id)
+			cacheJS.set("page",url+constant)
 			var goalArray = [];
 			var values = data.initData(base);
 			var goalArray = values[0];
 			var chartData = "";
 			ontarget = values[1];
 
-			cacheJS.set(id+"data",goalArray);
+			cacheJS.set(url+constant+"data",goalArray);
 		} else {
-			var id = cacheJS.get("page")
-			var goalArray = cacheJS.get(id+"newData");
+			var url = cacheJS.get("page")
+			var goalArray = cacheJS.get(url+"newData");
 			ontarget = data.newOnTarget(goalArray);
 		}
 		data.computeCount(goalArray);
